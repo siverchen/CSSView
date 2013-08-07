@@ -20,8 +20,8 @@ typedef enum {
 
 
 void (*setAttrForState)(id object, SEL sel, id attr, UIControlState state);
-void (*setIntAttrForState)(id object, SEL sel, int value);
-void (*setFloatAttrForState)(id object, SEL sel, float value);
+void (*setIntAttr)(id object, SEL sel, int value);
+void (*setFloatAttr)(id object, SEL sel, float value);
 
 
 @interface CSSRender : NSObject
@@ -48,11 +48,11 @@ void (*setFloatAttrForState)(id object, SEL sel, float value);
         if ([self.argClass isEqualToString:@"UIImage"]){
             [object performSelector:self.selector withObject:[UIImage imageNamed:attr]];
         }else if ([self.argClass isEqualToString:@"float"]){
-            setFloatAttrForState = (void (*)(id, SEL, float))[object methodForSelector:self.selector];
-            setFloatAttrForState(object, self.selector, [attr floatValue]);
+            setFloatAttr = (void (*)(id, SEL, float))[object methodForSelector:self.selector];
+            setFloatAttr(object, self.selector, [attr floatValue]);
         }else if ([self.argClass isEqualToString:@"int"]){
-            setIntAttrForState = (void (*)(id, SEL, int))[object methodForSelector:self.selector];
-            setIntAttrForState(object, self.selector, [attr intValue]);
+            setIntAttr = (void (*)(id, SEL, int))[object methodForSelector:self.selector];
+            setIntAttr(object, self.selector, [attr intValue]);
         }else if ([self.argClass isEqualToString:@"UIColor"]){
             NSArray *colors = [attr componentsSeparatedByString:@","];
             UIColor *color = [UIColor colorWithRed:[colors[0] floatValue] / 255
